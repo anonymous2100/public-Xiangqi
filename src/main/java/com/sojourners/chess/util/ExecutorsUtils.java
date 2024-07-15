@@ -3,33 +3,38 @@ package com.sojourners.chess.util;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ExecutorsUtils {
+public class ExecutorsUtils
+{
+	private static volatile ExecutorsUtils instance;
+	private ExecutorService threadPoolExecutor;
 
-    private static volatile ExecutorsUtils instance;
+	private ExecutorsUtils()
+	{
+		threadPoolExecutor = Executors.newSingleThreadExecutor();
+	}
 
-    private ExecutorService threadPoolExecutor;
+	public static ExecutorsUtils getInstance()
+	{
+		if (instance == null)
+		{
+			synchronized (ExecutorsUtils.class)
+			{
+				if (instance == null)
+				{
+					instance = new ExecutorsUtils();
+				}
+			}
+		}
+		return instance;
+	}
 
-    private ExecutorsUtils() {
-        threadPoolExecutor = Executors.newSingleThreadExecutor();
-    }
+	public void exec(Runnable task)
+	{
+		threadPoolExecutor.execute(task);
+	}
 
-    public static ExecutorsUtils getInstance() {
-        if (instance == null) {
-            synchronized (ExecutorsUtils.class) {
-                if (instance == null) {
-                    instance = new ExecutorsUtils();
-                }
-            }
-        }
-        return instance;
-    }
-
-    public void exec(Runnable task) {
-        threadPoolExecutor.execute(task);
-    }
-
-    public void close() {
-        threadPoolExecutor.shutdownNow();
-    }
-
+	public void close()
+	{
+		threadPoolExecutor.shutdownNow();
+	}
 }

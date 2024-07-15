@@ -1,108 +1,112 @@
 package com.sojourners.chess.model;
 
-public class BookData {
+public class BookData
+{
+	private String move;
+	private String word;
+	private int score;
+	private double winRate;
+	private int winNum;
+	private int drawNum;
+	private int loseNum;
+	private String note;
+	private String source;
 
-    private String move;
+	public String getSource()
+	{
+		return source;
+	}
 
-    private String word;
+	public void setSource(String source)
+	{
+		this.source = source;
+	}
 
-    private int score;
+	@Override
+	public String toString()
+	{
+		return "BookData{" + "move='" + move + '\'' + ", score=" + score + ", winRate=" + winRate + ", winNum=" + winNum
+				+ ", drawNum=" + drawNum + ", loseNum=" + loseNum + ", note='" + note + '\'' + ", source='" + source
+				+ '\'' + '}';
+	}
 
-    private double winRate;
+	public String getWord()
+	{
+		return word;
+	}
 
-    private int winNum;
+	public void setWord(String word)
+	{
+		this.word = word;
+	}
 
-    private int drawNum;
+	public String getMove()
+	{
+		return move;
+	}
 
-    private int loseNum;
+	public void setMove(String move)
+	{
+		this.move = move;
+	}
 
-    private String note;
+	public Integer getScore()
+	{
+		return score;
+	}
 
-    private String source;
+	public void setScore(Integer score)
+	{
+		this.score = score;
+	}
 
-    public String getSource() {
-        return source;
-    }
+	public double getWinRate()
+	{
+		return winRate;
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	public void setWinRate(double winRate)
+	{
+		this.winRate = winRate;
+	}
 
-    @Override
-    public String toString() {
-        return "BookData{" +
-                "move='" + move + '\'' +
-                ", score=" + score +
-                ", winRate=" + winRate +
-                ", winNum=" + winNum +
-                ", drawNum=" + drawNum +
-                ", loseNum=" + loseNum +
-                ", note='" + note + '\'' +
-                ", source='" + source + '\'' +
-                '}';
-    }
+	public Integer getWinNum()
+	{
+		return winNum;
+	}
 
-    public String getWord() {
-        return word;
-    }
+	public void setWinNum(Integer winNum)
+	{
+		this.winNum = winNum;
+	}
 
-    public void setWord(String word) {
-        this.word = word;
-    }
+	public Integer getDrawNum()
+	{
+		return drawNum;
+	}
 
-    public String getMove() {
-        return move;
-    }
+	public void setDrawNum(Integer drawNum)
+	{
+		this.drawNum = drawNum;
+	}
 
-    public void setMove(String move) {
-        this.move = move;
-    }
+	public Integer getLoseNum()
+	{
+		return loseNum;
+	}
 
-    public Integer getScore() {
-        return score;
-    }
+	public void setLoseNum(Integer loseNum)
+	{
+		this.loseNum = loseNum;
+	}
 
-    public void setScore(Integer score) {
-        this.score = score;
-    }
+	public String getNote()
+	{
+		return note;
+	}
 
-    public double getWinRate() {
-        return winRate;
-    }
-
-    public void setWinRate(double winRate) {
-        this.winRate = winRate;
-    }
-
-    public Integer getWinNum() {
-        return winNum;
-    }
-
-    public void setWinNum(Integer winNum) {
-        this.winNum = winNum;
-    }
-
-    public Integer getDrawNum() {
-        return drawNum;
-    }
-
-    public void setDrawNum(Integer drawNum) {
-        this.drawNum = drawNum;
-    }
-
-    public Integer getLoseNum() {
-        return loseNum;
-    }
-
-    public void setLoseNum(Integer loseNum) {
-        this.loseNum = loseNum;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
+	public void setNote(String note)
+	{
+		this.note = note;
+	}
 }

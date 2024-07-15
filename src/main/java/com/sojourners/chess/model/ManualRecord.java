@@ -1,40 +1,45 @@
 package com.sojourners.chess.model;
 
-public class ManualRecord {
+public class ManualRecord
+{
+	private Integer id;
+	private String name;
+	private Integer score;
 
-    private Integer id;
+	public ManualRecord(Integer id, String name, Integer score)
+	{
+		this.id = id;
+		this.name = name;
+		this.score = score;
+	}
 
-    private String name;
+	public Integer getId()
+	{
+		return id;
+	}
 
-    private Integer score;
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public ManualRecord(Integer id, String name, Integer score) {
-        this.id = id;
-        this.name = name;
-        this.score = score;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getScore()
+	{
+		return score;
+	}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
+	public void setScore(Integer score)
+	{
+		this.score = score;
+	}
 }

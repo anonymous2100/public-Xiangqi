@@ -3,22 +3,21 @@ package com.sojourners.chess.linker;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public interface GraphLinker {
+public interface GraphLinker
+{
+	void start();
 
-    void start();
+	void stop();
 
-    void stop();
+	void getTargetWindowId();
 
-    void getTargetWindowId();
+	Rectangle getTargetWindowPosition();
 
-    Rectangle getTargetWindowPosition();
+	BufferedImage screenshotByBack(Rectangle windowPos);
 
-    BufferedImage screenshotByBack(Rectangle windowPos);
+	BufferedImage screenshotByFront(Rectangle windowPos);
 
-    BufferedImage screenshotByFront(Rectangle windowPos);
+	void mouseClickByFront(Rectangle windowPos, Point p1, Point p2);
 
-    void mouseClickByFront(Rectangle windowPos, Point p1, Point p2);
-
-    void mouseClickByBack(Point p1, Point p2);
-
+	void mouseClickByBack(Point p1, Point p2);
 }

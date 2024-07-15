@@ -16,157 +16,175 @@ import javafx.stage.WindowEvent;
 /**
  * 主窗口
  */
-public class App extends Application {
+public class App extends Application
+{
+	private static Stage engineAdd;
+	private static Stage engineSetting;
+	private static Stage localBookSetting;
+	private static Stage mainStage;
+	private static Stage timeSetting;
+	private static Stage bookSetting;
+	private static Stage linkSetting;
 
-    private static Stage engineAdd;
-    private static Stage engineSetting;
-    private static Stage localBookSetting;
-    private static Stage mainStage;
-    private static Stage timeSetting;
-    private static Stage bookSetting;
-    private static Stage linkSetting;
+	@Override
+	public void start(Stage primaryStage) throws Exception
+	{
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setLocation(getClass().getResource("/fxml/app.fxml"));
+		Parent root = fxmlLoader.load();
+		primaryStage.setTitle("中国象棋 V1.2");
+		primaryStage.setScene(new Scene(root));
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/image/icon.png")));
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
+		{
+			@Override
+			public void handle(WindowEvent event)
+			{
+				Controller controller = fxmlLoader.getController();
+				controller.exit();
+			}
+		});
+		primaryStage.setOnShowing(new EventHandler<WindowEvent>()
+		{
+			@Override
+			public void handle(WindowEvent windowEvent)
+			{
+				Controller controller = fxmlLoader.getController();
+				controller.initStage();
+			}
+		});
+		mainStage = primaryStage;
+		primaryStage.show();
+	}
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/fxml/app.fxml"));
-        Parent root = fxmlLoader.load();
-        primaryStage.setTitle("中国象棋 V1.2");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/image/icon.png")));
+	/**
+	 * 引擎管理对话框
+	 */
+	public static void openEngineDialog()
+	{
+		engineSetting = createStage("/fxml/engineDialog.fxml");
+		engineSetting.setTitle("引擎管理");
+		engineSetting.initModality(Modality.APPLICATION_MODAL);
+		engineSetting.initOwner(mainStage);
+		engineSetting.showAndWait();
+	}
 
-        primaryStage.setOnCloseRequest(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                Controller controller = fxmlLoader.getController();
-                controller.exit();
-            }
-        });
-        primaryStage.setOnShowing(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                Controller controller = fxmlLoader.getController();
-                controller.initStage();
-            }
-        });
+	/**
+	 * 本地库管理对话框
+	 */
+	public static boolean openLocalBookDialog()
+	{
+		localBookSetting = createStage("/fxml/localBook.fxml");
+		localBookSetting.setTitle("本地库管理");
+		localBookSetting.initModality(Modality.APPLICATION_MODAL);
+		localBookSetting.initOwner(mainStage);
+		localBookSetting.showAndWait();
+		return LocalBookController.change;
+	}
 
-        mainStage = primaryStage;
+	/**
+	 * 添加引擎
+	 */
+	public static void openEngineAdd()
+	{
+		engineAdd = createStage("/fxml/engineAdd.fxml");
+		engineAdd.setTitle("添加引擎");
+		engineAdd.initModality(Modality.APPLICATION_MODAL);
+		engineAdd.initOwner(engineSetting);
+		engineAdd.showAndWait();
+	}
 
-        primaryStage.show();
-    }
+	public static void closeEngineAdd()
+	{
+		engineAdd.close();
+	}
 
-    /**
-     * 引擎管理对话框
-     */
-    public static void openEngineDialog() {
-        engineSetting = createStage("/fxml/engineDialog.fxml");
-        engineSetting.setTitle("引擎管理");
-        engineSetting.initModality(Modality.APPLICATION_MODAL);
-        engineSetting.initOwner(mainStage);
+	/**
+	 * 时间设置
+	 */
+	public static void openTimeSetting()
+	{
+		timeSetting = createStage("/fxml/timeSetting.fxml");
+		timeSetting.setTitle("时间设置");
+		timeSetting.initModality(Modality.APPLICATION_MODAL);
+		timeSetting.initOwner(mainStage);
+		timeSetting.showAndWait();
+	}
 
-        engineSetting.showAndWait();
-    }
+	public static void closeTimeSetting()
+	{
+		timeSetting.close();
+	}
 
-    /**
-     * 本地库管理对话框
-     */
-    public static boolean openLocalBookDialog() {
-        localBookSetting = createStage("/fxml/localBook.fxml");
-        localBookSetting.setTitle("本地库管理");
-        localBookSetting.initModality(Modality.APPLICATION_MODAL);
-        localBookSetting.initOwner(mainStage);
+	/**
+	 * 库招设置
+	 */
+	public static void openBookSetting()
+	{
+		bookSetting = createStage("/fxml/bookSetting.fxml");
+		bookSetting.setTitle("库招设置");
+		bookSetting.initModality(Modality.APPLICATION_MODAL);
+		bookSetting.initOwner(mainStage);
+		bookSetting.showAndWait();
+	}
 
-        localBookSetting.showAndWait();
+	public static void closeBookSetting()
+	{
+		bookSetting.close();
+	}
 
-        return LocalBookController.change;
-    }
+	/**
+	 * 连线设置
+	 */
+	public static void openLinkSetting()
+	{
+		linkSetting = createStage("/fxml/linkSetting.fxml");
+		linkSetting.setTitle("连线设置");
+		linkSetting.initModality(Modality.APPLICATION_MODAL);
+		linkSetting.initOwner(mainStage);
+		linkSetting.showAndWait();
+	}
 
-    /**
-     * 添加引擎
-     */
-    public static void openEngineAdd() {
-        engineAdd = createStage("/fxml/engineAdd.fxml");
-        engineAdd.setTitle("添加引擎");
-        engineAdd.initModality(Modality.APPLICATION_MODAL);
-        engineAdd.initOwner(engineSetting);
+	public static void closeLinkSetting()
+	{
+		linkSetting.close();
+	}
 
-        engineAdd.showAndWait();
-    }
-    public static void closeEngineAdd() {
-        engineAdd.close();
-    }
+	private static Stage createStage(String resource)
+	{
+		try
+		{
+			Stage stage = new Stage();
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(App.class.getResource(resource));
+			Parent pane = fxmlLoader.load();
+			stage.setScene(new Scene(pane));
+			return stage;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-    /**
-     * 时间设置
-     */
-    public static void openTimeSetting() {
+	public static Stage getEngineAdd()
+	{
+		return engineAdd;
+	}
 
-        timeSetting = createStage("/fxml/timeSetting.fxml");
-        timeSetting.setTitle("时间设置");
-        timeSetting.initModality(Modality.APPLICATION_MODAL);
-        timeSetting.initOwner(mainStage);
+	public static Stage getEngineDialog()
+	{
+		return engineSetting;
+	}
 
-        timeSetting.showAndWait();
-    }
-    public static void closeTimeSetting() {
-        timeSetting.close();
-    }
+	public static Stage getMainStage()
+	{
+		return mainStage;
+	}
 
-    /**
-     * 库招设置
-     */
-    public static void openBookSetting() {
-
-        bookSetting = createStage("/fxml/bookSetting.fxml");
-        bookSetting.setTitle("库招设置");
-        bookSetting.initModality(Modality.APPLICATION_MODAL);
-        bookSetting.initOwner(mainStage);
-
-        bookSetting.showAndWait();
-    }
-    public static void closeBookSetting() {
-        bookSetting.close();
-    }
-
-    /**
-     * 连线设置
-     */
-    public static void openLinkSetting() {
-
-        linkSetting = createStage("/fxml/linkSetting.fxml");
-        linkSetting.setTitle("连线设置");
-        linkSetting.initModality(Modality.APPLICATION_MODAL);
-        linkSetting.initOwner(mainStage);
-
-        linkSetting.showAndWait();
-    }
-    public static void closeLinkSetting() {
-        linkSetting.close();
-    }
-
-    private static Stage createStage(String resource) {
-        try {
-            Stage stage = new Stage();
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(App.class.getResource(resource));
-            Parent pane = fxmlLoader.load();
-            stage.setScene(new Scene(pane));
-            return stage;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static Stage getEngineAdd() {
-        return engineAdd;
-    }
-
-    public static Stage getEngineDialog() {
-        return engineSetting;
-    }
-
-    public static Stage getMainStage() {
-        return mainStage;
-    }
+	public static void main(String[] args)
+	{
+		Application.launch(App.class);
+	}
 }

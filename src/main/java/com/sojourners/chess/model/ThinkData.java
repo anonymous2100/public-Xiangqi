@@ -1,131 +1,145 @@
 package com.sojourners.chess.model;
 
 import com.sojourners.chess.board.ChessBoard;
-
 import java.util.List;
 
 /**
  * 思考细节数据显示
  */
-public class ThinkData {
+public class ThinkData
+{
+	private Integer depth;
+	private Integer score;
+	private Integer mate;
+	private Long nps;
+	private Long time;
+	private List<String> detail;
+	private String title;
+	private String body;
+	private Boolean isValid;
 
-    private Integer depth;
+	public ThinkData()
+	{
+	}
 
-    private Integer score;
+	public void generate(boolean redGo, boolean isReverse, ChessBoard board)
+	{
+		// 生成title
+		StringBuilder sb = new StringBuilder();
+		sb.append("深度: ").append(depth).append("  ");
+		boolean f = false;
+		if (score == null)
+		{
+			sb.append("绝杀: ");
+			score = mate;
+			f = true;
+		}
+		else
+		{
+			sb.append("分数: ");
+			score = score;
+		}
+		if (redGo && isReverse || !redGo && !isReverse)
+		{
+			score = -score;
+		}
+		sb.append(score).append(f ? "步  " : "  ");
+		sb.append("NPS: ").append(nps / 1000).append("K  ");
+		sb.append("时间: ").append(String.format("%.1fs", time / 1000D));
+		title = sb.toString();
+		// 生成body
+		body = board.translate(detail);
+		// 是否有效（处理分析模式下null数据）
+		isValid = !body.contains("null");
+	}
 
-    private Integer mate;
+	public Boolean getValid()
+	{
+		return isValid;
+	}
 
-    private Long nps;
+	public void setValid(Boolean valid)
+	{
+		isValid = valid;
+	}
 
-    private Long time;
+	public String getTitle()
+	{
+		return title;
+	}
 
-    private List<String> detail;
+	public void setTitle(String title)
+	{
+		this.title = title;
+	}
 
-    private String title;
+	public String getBody()
+	{
+		return body;
+	}
 
-    private String body;
+	public void setBody(String body)
+	{
+		this.body = body;
+	}
 
-    private Boolean isValid;
+	public Integer getMate()
+	{
+		return mate;
+	}
 
-    public ThinkData() {
+	public void setMate(Integer mate)
+	{
+		this.mate = mate;
+	}
 
-    }
+	public Integer getDepth()
+	{
+		return depth;
+	}
 
-    public void generate(boolean redGo, boolean isReverse, ChessBoard board) {
-        // 生成title
-        StringBuilder sb = new StringBuilder();
-        sb.append("深度: ").append(depth).append("  ");
-        boolean f = false;
-        if (score == null) {
-            sb.append("绝杀: ");
-            score = mate;
-            f = true;
-        } else {
-            sb.append("分数: ");
-            score = score;
-        }
-        if (redGo && isReverse || !redGo && !isReverse) {
-            score = -score;
-        }
-        sb.append(score).append(f ? "步  " : "  ");
-        sb.append("NPS: ").append(nps / 1000).append("K  ");
-        sb.append("时间: ").append(String.format("%.1fs", time / 1000D));
-        title = sb.toString();
-        // 生成body
-        body = board.translate(detail);
-        // 是否有效（处理分析模式下null数据）
-        isValid = !body.contains("null");
-    }
+	public void setDepth(Integer depth)
+	{
+		this.depth = depth;
+	}
 
-    public Boolean getValid() {
-        return isValid;
-    }
+	public Integer getScore()
+	{
+		return score;
+	}
 
-    public void setValid(Boolean valid) {
-        isValid = valid;
-    }
+	public void setScore(Integer score)
+	{
+		this.score = score;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public Long getNps()
+	{
+		return nps;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setNps(Long nps)
+	{
+		this.nps = nps;
+	}
 
-    public String getBody() {
-        return body;
-    }
+	public Long getTime()
+	{
+		return time;
+	}
 
-    public void setBody(String body) {
-        this.body = body;
-    }
+	public void setTime(Long time)
+	{
+		this.time = time;
+	}
 
-    public Integer getMate() {
-        return mate;
-    }
+	public List<String> getDetail()
+	{
+		return detail;
+	}
 
-    public void setMate(Integer mate) {
-        this.mate = mate;
-    }
-
-    public Integer getDepth() {
-        return depth;
-    }
-
-    public void setDepth(Integer depth) {
-        this.depth = depth;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Long getNps() {
-        return nps;
-    }
-
-    public void setNps(Long nps) {
-        this.nps = nps;
-    }
-
-    public Long getTime() {
-        return time;
-    }
-
-    public void setTime(Long time) {
-        this.time = time;
-    }
-
-    public List<String> getDetail() {
-        return detail;
-    }
-
-    public void setDetail(List<String> detail) {
-        this.detail = detail;
-    }
+	public void setDetail(List<String> detail)
+	{
+		this.detail = detail;
+	}
 }

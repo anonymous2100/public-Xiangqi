@@ -16,215 +16,227 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class EngineAddController {
+public class EngineAddController
+{
+	private Properties prop;
+	@FXML
+	private TextField pathText;
+	@FXML
+	private TextField nameText;
+	@FXML
+	private TextField protocolText;
+	@FXML
+	private ListView<Map.Entry<String, String>> optionsListView;
+	public static EngineConfig ec;
+	private LinkedHashMap<String, String> options;
 
+	@FXML
+	void selectButtonClick(ActionEvent e)
+	{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setInitialDirectory(new File(PathUtils.getJarPath()));
+		File file = fileChooser.showOpenDialog(null);
+		if (file != null)
+		{
+			pathText.setText(file.getPath());
+			nameText.setText(file.getName());
+			String protocol = Engine.test(file.getPath(), options = new LinkedHashMap<>());
+			if (protocol == null)
+			{
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("提示");
+				alert.setHeaderText("无效的引擎文件");
+			}
+			protocolText.setText(protocol);
+			showOptions();
+		}
+	}
 
-    private Properties prop;
+	private void showOptions()
+	{
+		optionsListView.getItems().clear();
+		for (Map.Entry<String, String> entry : options.entrySet())
+		{
+			optionsListView.getItems().add(entry);
+		}
+	}
 
-    @FXML
-    private TextField pathText;
+	@FXML
+	void cancelButtonClick(ActionEvent event)
+	{
+		App.closeEngineAdd();
+	}
 
-    @FXML
-    private TextField nameText;
+	@FXML
+	void okButtonClick(ActionEvent event)
+	{
+		String protocol = protocolText.getText();
+		if (!"uci".equals(protocol) && !"ucci".equals(protocol))
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("提示");
+			alert.setHeaderText("引擎协议不正确");
+			return;
+		}
+		if (ec == null)
+		{
+			// 添加引擎
+			prop.getEngineConfigList().add(
+					new EngineConfig(nameText.getText(), pathText.getText(), protocolText.getText(), options));
+		}
+		else
+		{
+			// 编辑引擎
+			ec.setName(nameText.getText());
+			ec.setPath(pathText.getText());
+			ec.setProtocol(protocolText.getText());
+			ec.setOptions(options);
+		}
+		App.closeEngineAdd();
+	}
 
-    @FXML
-    private TextField protocolText;
+	public void initialize()
+	{
+		prop = Properties.getInstance();
+		initListView();
+		if (ec != null)
+		{
+			nameText.setText(ec.getName());
+			pathText.setText(ec.getPath());
+			protocolText.setText(ec.getProtocol());
+			this.options = (LinkedHashMap<String, String>) ec.getOptions().clone();
+			showOptions();
+		}
+	}
 
-    @FXML
-    private ListView<Map.Entry<String, String>> optionsListView;
+	private void initListView()
+	{
+		optionsListView.setSelectionModel(new MultipleSelectionModel<Map.Entry<String, String>>()
+		{
+			private ObservableList emptyList = FXCollections.emptyObservableList();
 
-    public static EngineConfig ec;
+			@Override
+			public ObservableList<Integer> getSelectedIndices()
+			{
+				return emptyList;
+			}
 
-    private LinkedHashMap<String, String> options;
+			@Override
+			public ObservableList<Map.Entry<String, String>> getSelectedItems()
+			{
+				return emptyList;
+			}
 
-    @FXML
-    void selectButtonClick(ActionEvent e) {
+			@Override
+			public void selectIndices(int i, int... ints)
+			{
+			}
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(PathUtils.getJarPath()));
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            pathText.setText(file.getPath());
-            nameText.setText(file.getName());
-            String protocol = Engine.test(file.getPath(), options = new LinkedHashMap<>());
-            if (protocol == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("提示");
-                alert.setHeaderText("无效的引擎文件");
-            }
-            protocolText.setText(protocol);
-            showOptions();
-        }
-    }
+			@Override
+			public void selectAll()
+			{
+			}
 
-    private void showOptions() {
-        optionsListView.getItems().clear();
-        for (Map.Entry<String, String> entry : options.entrySet()) {
-            optionsListView.getItems().add(entry);
-        }
-    }
+			@Override
+			public void selectFirst()
+			{
+			}
 
-    @FXML
-    void cancelButtonClick(ActionEvent event) {
-        App.closeEngineAdd();
-    }
+			@Override
+			public void selectLast()
+			{
+			}
 
-    @FXML
-    void okButtonClick(ActionEvent event) {
-        String protocol = protocolText.getText();
-        if (!"uci".equals(protocol) && !"ucci".equals(protocol)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("提示");
-            alert.setHeaderText("引擎协议不正确");
-            return;
-        }
-        if (ec == null) {
-            // 添加引擎
-            prop.getEngineConfigList().add(new EngineConfig(nameText.getText(), pathText.getText(), protocolText.getText(), options));
-        } else {
-            // 编辑引擎
-            ec.setName(nameText.getText());
-            ec.setPath(pathText.getText());
-            ec.setProtocol(protocolText.getText());
-            ec.setOptions(options);
-        }
-        App.closeEngineAdd();
-    }
+			@Override
+			public void clearAndSelect(int i)
+			{
+			}
 
-    public void initialize() {
-        prop = Properties.getInstance();
+			@Override
+			public void select(int i)
+			{
+			}
 
-        initListView();
+			@Override
+			public void select(Map.Entry<String, String> stringStringEntry)
+			{
+			}
 
-        if (ec != null) {
-            nameText.setText(ec.getName());
-            pathText.setText(ec.getPath());
-            protocolText.setText(ec.getProtocol());
+			@Override
+			public void clearSelection(int i)
+			{
+			}
 
-            this.options = (LinkedHashMap<String, String>) ec.getOptions().clone();
-            showOptions();
-        }
-    }
+			@Override
+			public void clearSelection()
+			{
+			}
 
-    private void initListView() {
-        optionsListView.setSelectionModel(new MultipleSelectionModel<>() {
-            private ObservableList emptyList = FXCollections.emptyObservableList();
+			@Override
+			public boolean isSelected(int i)
+			{
+				return false;
+			}
 
-            @Override
-            public ObservableList<Integer> getSelectedIndices() {
-                return emptyList;
-            }
+			@Override
+			public boolean isEmpty()
+			{
+				return true;
+			}
 
-            @Override
-            public ObservableList<Map.Entry<String, String>> getSelectedItems() {
-                return emptyList;
-            }
+			@Override
+			public void selectPrevious()
+			{
+			}
 
-            @Override
-            public void selectIndices(int i, int... ints) {
-
-            }
-
-            @Override
-            public void selectAll() {
-
-            }
-
-            @Override
-            public void selectFirst() {
-
-            }
-
-            @Override
-            public void selectLast() {
-
-            }
-
-            @Override
-            public void clearAndSelect(int i) {
-
-            }
-
-            @Override
-            public void select(int i) {
-
-            }
-
-            @Override
-            public void select(Map.Entry<String, String> stringStringEntry) {
-
-            }
-
-            @Override
-            public void clearSelection(int i) {
-
-            }
-
-            @Override
-            public void clearSelection() {
-
-            }
-
-            @Override
-            public boolean isSelected(int i) {
-                return false;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return true;
-            }
-
-            @Override
-            public void selectPrevious() {
-
-            }
-
-            @Override
-            public void selectNext() {
-
-            }
-        });
-        optionsListView.setCellFactory(new Callback() {
-            @Override
-            public Object call(Object param) {
-                ListCell<Map.Entry<String, String>> cell = new ListCell<>() {
-                    @Override
-                    protected void updateItem(Map.Entry<String, String> item, boolean bln) {
-                        super.updateItem(item, bln);
-                        if (!bln) {
-                            HBox box = new HBox();
-
-                            Label label = new Label();
-                            label.setText(item.getKey());
-                            label.setAlignment(Pos.CENTER_LEFT);
-                            label.setPrefHeight(27);
-                            label.setPrefWidth(100);
-                            box.getChildren().add(label);
-
-                            TextField input = new TextField();
-                            input.setText(item.getValue());
-                            input.setPrefWidth(120);
-                            input.textProperty().addListener(new ChangeListener<String>() {
-                                @Override
-                                public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                                    options.put(item.getKey(), t1);
-                                }
-                            });
-                            box.getChildren().add(input);
-
-                            setGraphic(box);
-                        }
-                    }
-                };
-                return cell;
-            }
-
-        });
-    }
+			@Override
+			public void selectNext()
+			{
+			}
+		});
+		optionsListView.setCellFactory(new Callback()
+		{
+			@Override
+			public Object call(Object param)
+			{
+				ListCell<Map.Entry<String, String>> cell = new ListCell<Map.Entry<String, String>>()
+				{
+					@Override
+					protected void updateItem(Map.Entry<String, String> item, boolean bln)
+					{
+						super.updateItem(item, bln);
+						if (!bln)
+						{
+							HBox box = new HBox();
+							Label label = new Label();
+							label.setText(item.getKey());
+							label.setAlignment(Pos.CENTER_LEFT);
+							label.setPrefHeight(27);
+							label.setPrefWidth(100);
+							box.getChildren().add(label);
+							TextField input = new TextField();
+							input.setText(item.getValue());
+							input.setPrefWidth(120);
+							input.textProperty().addListener(new ChangeListener<String>()
+							{
+								@Override
+								public void changed(ObservableValue<? extends String> observableValue, String s,
+										String t1)
+								{
+									options.put(item.getKey(), t1);
+								}
+							});
+							box.getChildren().add(input);
+							setGraphic(box);
+						}
+					}
+				};
+				return cell;
+			}
+		});
+	}
 }
